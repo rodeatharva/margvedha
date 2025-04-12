@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Content</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional: Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f8f9fa; /* Light background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 20px 0; /* Add padding for smaller screens */
+        }
+
+        .upload-container {
+            max-width: 600px; /* Max width for the form card */
+            width: 100%; /* Responsive width */
+            background-color: #ffffff; /* White card background */
+            padding: 35px 40px; /* Generous padding */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Softer, deeper shadow */
+            border: 1px solid #e9ecef; /* Subtle border */
+        }
+
+        .upload-container h2 {
+            text-align: center;
+            margin-bottom: 35px; /* More space below heading */
+            font-size: 28px; /* Larger heading */
+            color: #343a40; /* Darker heading color */
+            font-weight: 600; /* Bolder heading */
+        }
+
+        /* Style form groups and labels */
+        .form-group {
+            margin-bottom: 20px; /* Space between form groups */
+        }
+
+        .form-group label {
+            display: block; /* Ensure label takes full width */
+            margin-bottom: 8px; /* Space below label */
+            font-weight: 500; /* Slightly bolder labels */
+            color: #495057; /* Label color */
+            font-size: 0.95rem;
+        }
+
+        /* Style Bootstrap's custom file input */
+        .custom-file-input ~ .custom-file-label::after {
+            content: "Browse"; /* Change button text */
+            background-color: #e9ecef; /* Light grey button */
+            color: #495057;
+        }
+
+        .custom-file-label {
+            background-color: #fff; /* Ensure label background is white */
+            border-color: #ced4da;
+            color: #6c757d; /* Placeholder text color */
+            height: calc(1.5em + 0.75rem + 2px); /* Match Bootstrap's default input height */
+            padding: 0.375rem 0.75rem;
+            line-height: 1.5;
+            overflow: hidden; /* Prevent long filenames from overflowing */
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .custom-file-input:focus ~ .custom-file-label {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Style the textarea */
+        .form-control { /* General styling for textarea (and other inputs if added) */
+             border-radius: 5px;
+             border-color: #ced4da;
+             padding: 10px 15px;
+             min-height: 100px; /* Decent minimum height for textarea */
+        }
+
+        .form-control:focus {
+             border-color: #80bdff;
+             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        /* Style the Upload button */
+        .btn-primary {
+            width: 100%; /* Full width */
+            padding: 12px 20px; /* Comfortable padding */
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 5px;
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            margin-top: 15px; /* Space above button */
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .btn-primary i {
+            margin-right: 8px; /* Space between icon and text */
+        }
+
+        /* Ensure Django's widgets get Bootstrap classes */
+        /* Ideally, set these classes in your Django forms.py using widgets */
+        /* Example: forms.FileInput(attrs={'class': 'custom-file-input'}) */
+        /* Example: forms.Textarea(attrs={'class': 'form-control', 'rows': 4}) */
+
+        /* Fallback CSS selector (less reliable than widget attrs) */
+         input[type="file"] {
+            /* Might be hidden by Bootstrap's .custom-file structure, */
+            /* but ensures it gets the class if structure is different */
+             /* Ensure this ID matches your Django form field ID */
+            &#id_file.custom-file-input {}
+         }
+         textarea {
+            /* Ensure this ID matches your Django form field ID */
+            &#id_disc.form-control {}
+         }
+
+    </style>
+</head>
+<body>
+    <div class="upload-container">
+        <h2><i class="fas fa-cloud-upload-alt"></i> Upload Content</h2>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.file.id_for_label }}">Choose File</label>
+                {# This structure requires the widget to add class="custom-file-input" #}
+                <div class="custom-file">
+                    {{ form.file }}
+                    <label class="custom-file-label" for="{{ form.file.id_for_label }}">Choose file...</label>
+                </div>
+                 {% if form.file.errors %}
+                    <div class="invalid-feedback d-block"> <!-- Show file errors -->
+                        {% for error in form.file.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                 {% endif %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.disc.id_for_label }}">Description</label>
+                 {# This requires the widget to add class="form-control" #}
+                {{ form.disc }}
+                {% if form.disc.errors %}
+                    <div class="invalid-feedback d-block"> <!-- Show description errors -->
+                        {% for error in form.disc.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                 {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-upload"></i> Upload
+            </button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script> <!-- Note: Popper version might differ based on Bootstrap version, v4 uses Popper v1 generally -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // JavaScript to update the custom file input label with the selected file name
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.querySelector('.custom-file-input');
+            const fileLabel = document.querySelector('.custom-file-label');
+
+            if (fileInput && fileLabel) {
+                fileInput.addEventListener('change', function(e) {
+                    // Get the file name
+                    const fileName = e.target.files.length > 0 ? e.target.files[0].name : 'Choose file...';
+                    // Replace the "Choose a file" label
+                    fileLabel.textContent = fileName;
+                });
+            }
+
+            // --- Fallback: Add classes if not set by Django widget ---
+            // This is less reliable than setting attrs in forms.py
+            const fileField = document.getElementById('{{ form.file.id_for_label }}'); // Use id_for_label which should match input id
+            const descField = document.getElementById('{{ form.disc.id_for_label }}');
+
+            if (fileField && !fileField.classList.contains('custom-file-input')) {
+                fileField.classList.add('custom-file-input');
+                console.warn("Applied 'custom-file-input' class via JS. Consider setting it in Django widget attributes.");
+            }
+            if (descField && !descField.classList.contains('form-control')) {
+                descField.classList.add('form-control');
+                console.warn("Applied 'form-control' class via JS. Consider setting it in Django widget attributes.");
+            }
+            // --- End Fallback ---
+
+
+             // Add Bootstrap's 'is-invalid' class if errors exist (improves styling)
+             {% if form.file.errors %}
+                if(fileField) fileField.classList.add('is-invalid');
+             {% endif %}
+             {% if form.disc.errors %}
+                 if(descField) descField.classList.add('is-invalid');
+                 // Also style the label for the textarea if needed
+                 // const descLabel = document.querySelector('label[for="{{ form.disc.id_for_label }}"]');
+                 // if (descLabel) descLabel.classList.add('text-danger');
+             {% endif %}
+
+        });
+    </script>
+</body>
+</html>

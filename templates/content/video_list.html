@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Content</title>
+  <!-- Optional: Bootstrap CSS (can be removed if not using other Bootstrap components) -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional: Font Awesome for Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Light grey background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+      padding-top: 40px;
+      padding-bottom: 40px;
+    }
+
+    .video-main-container {
+      max-width: 1200px; /* Wider container for potentially 2-3 columns */
+      margin: 0 auto; /* Center the container */
+      padding: 0 15px; /* Padding on the sides */
+    }
+
+    .video-main-container h2 {
+      text-align: center;
+      color: #343a40; /* Darker heading color */
+      margin-bottom: 40px; /* More space below heading */
+      font-size: 32px; /* Larger heading */
+      font-weight: 600; /* Bolder heading */
+    }
+
+    /* Grid layout for video cards */
+    .video-grid {
+      display: grid;
+      /* Responsive grid: 1 column on small, 2 on medium+ */
+      /* Adjust minmax for desired card width */
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 30px; /* Space between grid items */
+    }
+
+    /* Individual video card styling */
+    .video-card {
+      background-color: #ffffff; /* White card background */
+      border-radius: 12px; /* Rounded corners */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer shadow */
+      border: 1px solid #e9ecef; /* Subtle border */
+      display: flex;
+      flex-direction: column; /* Stack elements vertically */
+      overflow: hidden; /* Ensure video corners are clipped by border-radius */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Hover effect */
+    }
+
+    .video-card:hover {
+        transform: translateY(-5px); /* Lift card slightly */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Enhance shadow */
+    }
+
+    .video-card .card-body {
+        padding: 20px 25px; /* Padding for the text content */
+        flex-grow: 1; /* Allow body to grow if needed */
+    }
+
+    .video-card .card-text {
+      color: #495057; /* Text color */
+      font-size: 1rem;
+      margin-bottom: 0; /* Remove bottom margin if video is directly below */
+      font-weight: 500; /* Slightly bolder description */
+    }
+
+    /* Style the HTML5 video player */
+    .video-card video {
+      display: block; /* Remove extra space below video */
+      width: 100%; /* Make video responsive */
+      max-height: 400px; /* Optional: Limit video height */
+      background-color: #000; /* Black background for letterboxing */
+      /* border-radius: 0 0 12px 12px; Remove this if video is inside card-body */
+      /* If video is the last element, it takes bottom rounding */
+      margin-top: 15px; /* Space between description and video */
+      outline: none; /* Remove default focus outline */
+    }
+
+    /* Fallback for no video content */
+    .no-video {
+        text-align: center;
+        color: #6c757d;
+        font-size: 1.1rem;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+        grid-column: 1 / -1; /* Make it span all columns if grid is active */
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="video-main-container">
+    <h2><i class="fas fa-film"></i> Video Content</h2>
+
+    {% if videos %}
+      <div class="video-grid">
+        {% for video in videos %}
+        <div class="video-card">
+          <div class="card-body">
+            <p class="card-text">{{ video.disc|default:"Untitled Video" }}</p>
+            {# Place video inside card-body or directly after it depending on desired layout #}
+             <video controls controlsList="nodownload">
+              {# Try to determine type dynamically if possible, otherwise default #}
+              <source src="{{ video.file.url }}" type="{{ video.content_type|default:'video/mp4' }}">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          {# Alternatively, place video outside card-body like this: #}
+          {# <video controls controlsList="nodownload"> ... </video> #}
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      {# Display this message within the grid container or directly in the main container #}
+      <div class="video-grid"> {# Keep grid structure for consistent spacing if needed #}
+         <p class="no-video">No video files found.</p>
+      </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Optional: Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

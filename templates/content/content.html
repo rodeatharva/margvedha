@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Links</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Optional: Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f8f9fa; /* Light grey background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Nicer font */
+    }
+    .container {
+      max-width: 550px; /* Adjusted width */
+      width: 100%;
+      background-color: white;
+      padding: 40px; /* More padding */
+      border-radius: 10px; /* Rounded corners */
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Softer shadow */
+      text-align: center; /* Center heading */
+    }
+    h2 {
+      margin-bottom: 35px; /* More space below heading */
+      font-size: 28px; /* Larger heading */
+      color: #343a40; /* Darker grey heading color */
+      font-weight: 600; /* Bolder heading */
+    }
+    /* Use Bootstrap List Group for cleaner links */
+    .list-group {
+      margin-top: 20px; /* Space below heading */
+      text-align: left; /* Align list items text to the left */
+    }
+    .list-group-item {
+      border-color: #e9ecef; /* Lighter border color */
+      padding: 15px 20px; /* Comfortable padding */
+      font-size: 17px; /* Slightly larger link font */
+      color: #007bff; /* Standard link blue */
+      transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; /* Smooth hover */
+    }
+    .list-group-item:hover {
+      background-color: #f1f1f1; /* Subtle background on hover */
+      color: #0056b3; /* Darker blue on hover */
+    }
+    .list-group-item i {
+        margin-right: 10px; /* Space between icon and text */
+        width: 20px; /* Fixed width for icon alignment */
+        text-align: center;
+        color: #6c757d; /* Subtle icon color */
+    }
+    /* Add spacing between logical groups of links */
+    .list-group-item.group-spacer {
+        margin-top: 15px; /* Add space before this item */
+        border-top-width: 1px; /* Ensure border is visible */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Content Links</h2>
+
+    <div class="list-group">
+      <!-- Group 1: View Content -->
+      <a href="{% url 'view_audio_content' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-headphones-alt"></i> Audio Content
+      </a>
+      <a href="{% url 'view_video_content' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-video"></i> Video Content
+      </a>
+
+      <!-- Group 2: Upload Content -->
+      <a href="{% url 'upload_audio' %}" class="list-group-item list-group-item-action group-spacer">
+        <i class="fas fa-upload"></i> Upload Audio
+      </a>
+      <a href="{% url 'upload_video' %}" class="list-group-item list-group-item-action">
+        <i class="fas fa-file-upload"></i> Upload Video
+      </a>
+
+      <!-- Group 3: Settings/Other -->
+      <a href="{% url 'emotion' %}" class="list-group-item list-group-item-action group-spacer">
+        <i class="fas fa-smile-beam"></i> Change Emotion
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

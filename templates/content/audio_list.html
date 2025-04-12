@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Content</title>
+  <!-- Optional: Add Bootstrap CSS for base styling if desired, but custom styles will override -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa; /* Light grey background */
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+      padding-top: 40px; /* Add some space at the top */
+      padding-bottom: 40px; /* Add some space at the bottom */
+    }
+
+    .audio-main-container {
+      max-width: 1100px; /* Wider container for more columns */
+      margin: 0 auto; /* Center the container */
+      padding: 0 15px; /* Padding on the sides */
+    }
+
+    .audio-main-container h2 {
+      text-align: center;
+      color: #343a40; /* Darker heading color */
+      margin-bottom: 40px; /* More space below heading */
+      font-size: 32px; /* Larger heading */
+      font-weight: 600; /* Bolder heading */
+    }
+
+    /* Grid layout for audio cards */
+    .audio-grid {
+      display: grid;
+      /* Responsive grid: Adjust number of columns based on width */
+      /* Min width 280px, max 1fr (take equal space) */
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px; /* Space between grid items */
+    }
+
+    /* Individual audio card styling */
+    .audio-card {
+      background-color: #ffffff; /* White card background */
+      border-radius: 12px; /* More rounded corners */
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Softer, slightly larger shadow */
+      padding: 20px 25px; /* Comfortable padding */
+      border: 1px solid #e9ecef; /* Subtle border */
+      display: flex;
+      flex-direction: column; /* Stack title and player vertically */
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Hover effect */
+    }
+
+    .audio-card:hover {
+        transform: translateY(-5px); /* Lift card slightly on hover */
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); /* Enhance shadow on hover */
+    }
+
+    .audio-card .card-text {
+      color: #495057; /* Slightly lighter text color */
+      font-size: 1rem; /* Standard text size */
+      margin-bottom: 15px; /* Space between text and player */
+      font-weight: 500; /* Slightly bolder description */
+      flex-grow: 1; /* Allow text to take available space */
+      min-height: 40px; /* Ensure minimum height for alignment if text varies */
+    }
+
+    /* Style the HTML5 audio player */
+    .audio-card audio {
+      width: 100%;
+      border-radius: 6px; /* Rounded corners for the player */
+      /* Optional: Add a subtle filter to potentially normalize appearance */
+      /* filter: saturate(85%); */
+      outline: none; /* Remove default focus outline if needed */
+      margin-top: auto; /* Push player to bottom if card height varies */
+    }
+
+    /* Customize scrollbar for audio player (Webkit browsers like Chrome/Safari) */
+    .audio-card audio::-webkit-media-controls-panel {
+        background-color: #f1f3f5; /* Light background for controls */
+        border-radius: 6px;
+    }
+    .audio-card audio::-webkit-media-controls-play-button,
+    .audio-card audio::-webkit-media-controls-volume-slider,
+    .audio-card audio::-webkit-media-controls-timeline {
+       /* Add specific styles if needed */
+    }
+
+    /* Fallback for no audio content */
+    .no-audio {
+        text-align: center;
+        color: #6c757d;
+        font-size: 1.1rem;
+        padding: 40px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        border: 1px solid #e9ecef;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="audio-main-container">
+    <h2>Audio Content</h2>
+
+    {% if audios %}
+      <div class="audio-grid">
+        {% for audio in audios %}
+        <div class="audio-card">
+          <p class="card-text">{{ audio.disc|default:"Untitled Audio" }}</p> {# Use default if description is empty #}
+          <audio controls controlsList="nodownload"> {# Added nodownload attribute #}
+            <source src="{{ audio.file.url }}" type="{{ audio.content_type|default:'audio/mpeg' }}"> {# Try to get content type dynamically #}
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="no-audio">No audio files found.</p>
+    {% endif %}
+
+  </div>
+
+  <!-- Optional: Bootstrap JS and dependencies (if needed for other features) -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>

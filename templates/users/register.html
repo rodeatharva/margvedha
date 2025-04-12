@@ -1,0 +1,163 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Signup</title>
+  <style>
+    .signup-container {
+      max-width: 500px;
+      margin: 80px auto;
+      padding: 2rem;
+      background: #f7f8fc;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      color: #4a4e69;
+      margin-bottom: 1.5rem;
+    }
+
+    .signup-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signup-form label {
+      margin-top: 1rem;
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+
+    .signup-form input,
+    .signup-form select {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    .name-fields {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .name-fields div {
+      flex: 1;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-container input {
+      margin-right: 0.5rem;
+    }
+
+    .checkbox-container a {
+      color: #6c63ff;
+      text-decoration: none;
+    }
+
+    .signup-form button {
+      margin-top: 2rem;
+      padding: 10px;
+      background-color: #6c63ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .signup-form button:hover {
+      background-color: #574fd6;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .login-link a {
+      color: #6c63ff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h2>Create Your RasaSetu Account 🧠</h2>
+    <form method="POST" class="signup-form" onsubmit="return checkTerms();">
+      {% csrf_token %}
+
+      <div class="name-fields">
+        <div>
+          <label for="id_first_name">First Name</label>
+          {{ form.first_name }}
+        </div>
+        <div>
+          <label for="id_last_name">Last Name</label>
+          {{ form.last_name }}
+        </div>
+      </div>
+
+      <label for="id_username">Username</label>
+      {{ form.username }}
+
+      <label for="id_email">Email Address</label>
+      {{ form.email }}
+
+      <label for="id_password1">Password</label>
+      {{ form.password1 }}
+
+      <label for="id_password2">Confirm Password</label>
+      {{ form.password2 }}
+
+      <label for="id_phone_number">Phone Number</label>
+      {{ form.phone_number }}
+
+      <label for="id_dob">Date of Birth</label>
+      {{ form.dob }}
+
+      <label for="id_gender">Gender</label>
+      {{ form.gender }}
+
+      <label for="id_emotion">Current Emotion</label>
+      {{ form.emotion }}
+
+      <div class="checkbox-container">
+        {{ form.terms_agree }}
+        <label for="id_terms_agree">
+          I agree to the <a href="/privacy">Privacy Policy</a> and <a href="/terms">Terms & Conditions</a>
+        </label>
+      </div>
+
+      <button type="submit">Sign Up</button>
+
+      <p class="login-link">
+        Already have an account? <a href="{% url 'login' %}">Log in</a>
+      </p>
+    </form>
+  </div>
+
+  <script>
+    function checkTerms() {
+      const checkbox = document.getElementById("id_terms_agree");
+      if (!checkbox.checked) {
+        alert("Please agree to the Privacy Policy and Terms & Conditions.");
+        return false;
+      }
+      return true;
+    }
+  </script>
+</body>
+</html>
