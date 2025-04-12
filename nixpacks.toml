@@ -1,0 +1,11 @@
+[phases.setup]
+nixPkgs = [
+  "python3",
+  "gcc",
+  "pkg-config",
+  "libmysqlclient",
+  "mysql",
+  "mariadb-connector-c",
+  "openssl",       # just in case it's needed
+  "zlib"
+]
