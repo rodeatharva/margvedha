@@ -82,11 +82,17 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 import dj_database_url
+import dj_database_url
+import os
 
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3',  # fallback for local dev
-        conn_max_age=600,                # keep-alive for connections
-        ssl_require=True                 # required on Railway
+        conn_max_age=600
     )
 }
+
+# Add SSL only if PostgreSQL is being used
+if DATABASES['default']['ENGINE'] != 'django.db.backends.sqlite3':
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
+
