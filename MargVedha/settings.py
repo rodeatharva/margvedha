@@ -92,6 +92,11 @@ DATABASES = {
     )
 }
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.railway.app',
+]
+
+
 # Add SSL only if PostgreSQL is being used
 if DATABASES['default']['ENGINE'] != 'django.db.backends.sqlite3':
     DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
